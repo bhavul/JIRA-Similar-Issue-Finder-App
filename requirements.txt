@@ -1,0 +1,9 @@
+logzero # see github.com/metachris/logzero
+jira
+nltk
+scikit-learn
+argparse
+pickle
+click
+raven
+schedule
