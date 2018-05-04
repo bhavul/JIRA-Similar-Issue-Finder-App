@@ -1,9 +1,17 @@
+numpy
+scipy
+matplotlib
+ipython
+jupyter
+pandas
+sympy
+nose
 logzero # see github.com/metachris/logzero
 jira
 nltk
 scikit-learn
 argparse
-pickle
+# pickle
 click
 raven
 schedule

@@ -110,3 +110,4 @@ current_model_for_related_tickets.py
 
 # ignore idea files
 *.iml
+.idea/
