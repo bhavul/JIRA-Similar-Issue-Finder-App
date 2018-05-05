@@ -111,3 +111,6 @@ current_model_for_related_tickets.py
 # ignore idea files
 *.iml
 .idea/
+
+# ignore already commented json lists
+*_already_commented_tickets.json
