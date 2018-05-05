@@ -1,5 +1,5 @@
-numpy
-scipy
+numpy==1.13.1
+scipy==0.19.1
 matplotlib
 ipython
 jupyter
@@ -9,9 +9,8 @@ nose
 logzero # see github.com/metachris/logzero
 jira
 nltk
-scikit-learn
+scikit-learn==0.18.2
 argparse
-# pickle
 click
 raven
-schedule
+# pickle  # mostly pre-installed

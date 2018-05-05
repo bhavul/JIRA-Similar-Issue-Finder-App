@@ -10,8 +10,8 @@ import click
 import scripts.logger as logger
 from pprint import pformat
 import os.path
-import schedule
 import time
+import json
 
 __author__ = "Bhavul Gauri"
 
@@ -84,10 +84,10 @@ def comment_related_tickets(test_model,open_tickets_filter):
         logger.logger.info("Filter I'm using : "+pformat(filter_to_use))
         for filter_name,filter in filter_to_use.items():
             jira_tickets_corpus = scraper.filter_crawler(jira_obj,filter)
-            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.pickle"
+            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.json"
             create_already_commented_tickets_file_if_not_exists(already_commented_tickets_file)
-            with open(already_commented_tickets_file, 'rb') as pickled_file:
-                tickets_already_commented = pickle.load(pickled_file)
+            with open(already_commented_tickets_file, 'r') as data_file:
+                tickets_already_commented = json.load(data_file)
             new_tickets_corpus = [ticket for ticket in jira_tickets_corpus if ticket['jiraid'] not in tickets_already_commented]
             if not new_tickets_corpus:
                 logger.logger.info("No new tickets to comment on from "+filter_name+". Moving on to next filter.")
@@ -100,7 +100,8 @@ def comment_related_tickets(test_model,open_tickets_filter):
                 tickets_already_commented.append(ticket['jiraid'])
                 # break;
             logger.logger.info(tickets_already_commented)
-            pickle.dump(tickets_already_commented, open(already_commented_tickets_file, "wb"))
+            with open(already_commented_tickets_file,'w') as outfile:
+                json.dump(tickets_already_commented, outfile)
             logger.logger.info("Done for "+str(filter_name))
         logger.logger.info("Execution completed.")
     except Exception as e:
@@ -121,10 +122,10 @@ def get_data(type):
         logger.logger.info(current_model.models)
     elif(type=='tickets-alread-commented'):
         for filter_name in jira_filters.filters_to_get_new_tickets.keys():
-            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.pickle"
+            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.json"
             tickets_already_commented = []
-            with open(already_commented_tickets_file, 'rb') as pickled_file:
-                tickets_already_commented = pickle.load(pickled_file)
+            with open(already_commented_tickets_file, 'r') as json_file:
+                tickets_already_commented = json.load(json_file)
             logger.logger.info("Tickets already commented for "+filter_name+": "+str(tickets_already_commented))
     else:
         logger.logger.error("Couldn't understand.")
@@ -134,18 +135,7 @@ def create_already_commented_tickets_file_if_not_exists(filename):
     if not os.path.exists(filename):
         logger.logger.warning("No already existing file with already commented tickets data.")
         list_of_str = ['WSE-123456']
-        pickle.dump(list_of_str, open(filename, "wb"))
-
-def test_text():
-    logger.logger.info("I'm working...")
-
-schedule.every(1).minutes.do(test_text)
-
-@cli.command()
-def cronjob():
-    while 1:
-        schedule.run_pending()
-        time.sleep(1)
+        json.dump(list_of_str, open(filename, "w"))
 
 
 if __name__ == "__main__":
