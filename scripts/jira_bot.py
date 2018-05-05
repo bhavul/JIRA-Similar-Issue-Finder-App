@@ -12,6 +12,7 @@ from pprint import pformat
 import os.path
 import time
 import json
+from scripts.util import project_dir_path
 
 __author__ = "Bhavul Gauri"
 
@@ -43,7 +44,7 @@ def train_related_tickets_model():
 
 
 def get_model_file_path(filter_name, test_model_name):
-    model_path = './models/'
+    model_path = project_dir_path+'/scripts/models/'
     if(filter_name == 'custom'):
         if test_model_name is not None:
             model_path += test_model_name
@@ -84,7 +85,8 @@ def comment_related_tickets(test_model,open_tickets_filter):
         logger.logger.info("Filter I'm using : "+pformat(filter_to_use))
         for filter_name,filter in filter_to_use.items():
             jira_tickets_corpus = scraper.filter_crawler(jira_obj,filter)
-            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.json"
+            already_commented_tickets_file = project_dir_path + \
+                                             "/scripts/data/"+filter_name+"_already_commented_tickets.json"
             create_already_commented_tickets_file_if_not_exists(already_commented_tickets_file)
             with open(already_commented_tickets_file, 'r') as data_file:
                 tickets_already_commented = json.load(data_file)
@@ -122,7 +124,8 @@ def get_data(type):
         logger.logger.info(current_model.models)
     elif(type=='tickets-alread-commented'):
         for filter_name in jira_filters.filters_to_get_new_tickets.keys():
-            already_commented_tickets_file = "./data/"+filter_name+"_already_commented_tickets.json"
+            already_commented_tickets_file = project_dir_path + \
+                                             "/scripts/data/"+filter_name+"_already_commented_tickets.json"
             tickets_already_commented = []
             with open(already_commented_tickets_file, 'r') as json_file:
                 tickets_already_commented = json.load(json_file)

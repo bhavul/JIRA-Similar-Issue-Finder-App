@@ -7,6 +7,7 @@ import scripts.settings.words_to_ignore as ignored_collection
 import pickle
 import datetime
 import scripts.logger as logger
+from scripts.util import project_dir_path
 
 stops = set(stopwords.words("english"))
 stemmer = SnowballStemmer('english')
@@ -51,7 +52,7 @@ def train_and_save_tfidf_model(jira_tickets_corpus, output_file_name_without_ext
     tfidf_trainingset = tfidf_model.fit_transform(list_of_docs)
     trained_model_and_data_dict = {'model':tfidf_model, 'trained_data':tfidf_trainingset, 'corpus':training_ticket_corpus}
     now = datetime.datetime.now()
-    model_name_with_path = "./models/"+output_file_name_without_extn+"_"+str(now.day)+"_"+str(now.month)+"_"+str(now.year)+"_"+str(now.hour)+"_"+str(now.minute)+"_"+str(now.second)+".pickle"
+    model_name_with_path = project_dir_path + "/scripts/models/"+output_file_name_without_extn+"_"+str(now.day)+"_"+str(now.month)+"_"+str(now.year)+"_"+str(now.hour)+"_"+str(now.minute)+"_"+str(now.second)+".pickle"
     logger.logger.info("Trained new model name - "+model_name_with_path)
     pickle.dump(trained_model_and_data_dict, open(model_name_with_path, "wb"))
     return model_name_with_path
