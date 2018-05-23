@@ -21,6 +21,9 @@ __author__ = "Bhavul Gauri"
 # 2. Change jira_auth.py to config file. use configparser. For filters to scrape also do same. For words to ignore also.
 # 3. words-to-ignore --- if file exists only then use it. else take all.
 # 4. make cronjob a better feature and then document about cronjob.
+# 6. mail whoever doesn't fill in comments
+# 7. mail about data of the month for tickets
+# 8. mail about tech debt tasks just before sprint planning.
 
 
 @click.group()
@@ -50,10 +53,8 @@ def get_model_file_path(filter_name, test_model_name):
             model_path += test_model_name
         else:
             raise Exception("For custom filter, a model name must be given to know which model to use.")
-    elif(filter_name == 'open_fnb'):
-        model_path += current_model.models['fnb']
-    elif(filter_name == 'open_cp'):
-        model_path += current_model.models['cp']
+    elif(filter_name in jira_filters.filters_to_get_new_tickets.keys()):
+        model_path += current_model.models[filter_name]
     else:
         raise Exception("filter name seems to be wrong.")
     logger.logger.info("Model being used - "+model_path)
@@ -139,6 +140,57 @@ def create_already_commented_tickets_file_if_not_exists(filename):
         logger.logger.warning("No already existing file with already commented tickets data.")
         list_of_str = ['WSE-123456']
         json.dump(list_of_str, open(filename, "w"))
+
+
+def get_template_comment():
+    comment = "{color:#d04437}*Hello!*{color} \n\n If you're the rockstar who will close this ticket, then please edit this comment, fill the answers to questions below and only then close it."
+    comment += "\n \\\\"
+    comment += '{panel:title=What was the issue?} \n Fill your answer here. \n {panel}'
+    comment += '{panel:title=How did you solve it?} \n Fill your answer here. You can put a link to confluence page where the issue & its solution has been described, or describe the way you debugged and solved this issue. Extra marks for clean formatting.\n {panel}'
+    comment += '{panel:title=Can it occur again in the future?} \n Change this line to say just \'Yes\' or \'No\'. If you say, \'Yes\', then make sure to create a Tech Debt task and link it to this ticket before you close this. \n {panel}\n\n\n'
+    comment += "----"
+    comment += '\n{color:#707070}_Time is the most precious gift you could give to somebody. By filling this ' \
+               'properly, ' \
+               'you would do just that for somebody who might come lurking to this ticket in the future to check how ' \
+               'it was solved. Thanks!_{color}'
+    return comment
+
+
+@cli.command()
+@click.option('--open-tickets-filter', help='If this argument is given, it picks up the tasks that satisfy this '
+                                            'filter instead of default filters.')
+def post_template_comment_on_new_tickets(open_tickets_filter):
+    """This creates a template comment on each ticket which needs to be filled by a developer before the ticket is
+    marked as completed."""
+    try:
+        jira_obj = scraper.connect_to_jira()
+        default_filters = jira_filters.filters_to_get_new_tickets
+        if open_tickets_filter is not None:
+            filter_to_use = {'custom':open_tickets_filter}
+        else:
+            filter_to_use = default_filters
+        logger.logger.info("Filter I'm using : "+pformat(filter_to_use))
+        for filter_name,filter in filter_to_use.items():
+            jira_tickets_corpus = scraper.filter_crawler(jira_obj,filter)
+            already_commented_tickets_file = project_dir_path + \
+                                             "/scripts/data/"+filter_name+"_already_commented_template_tickets.json"
+            create_already_commented_tickets_file_if_not_exists(already_commented_tickets_file)
+            with open(already_commented_tickets_file, 'r') as data_file:
+                tickets_already_commented = json.load(data_file)
+            new_tickets_corpus = [ticket for ticket in jira_tickets_corpus if ticket['jiraid'] not in tickets_already_commented]
+            if not new_tickets_corpus:
+                logger.logger.info("No new tickets to comment on from "+filter_name+". Moving on to next filter.")
+                continue
+            for ticket in new_tickets_corpus:
+                scraper.comment_on_task(jira_obj, ticket['jiraid'], get_template_comment())
+                tickets_already_commented.append(ticket['jiraid'])
+            with open(already_commented_tickets_file,'w') as outfile:
+                json.dump(tickets_already_commented, outfile)
+            logger.logger.info("Done for "+str(filter_name))
+        logger.logger.info("Execution completed.")
+    except Exception as e:
+        logger.logger.exception(e)
+        logger.sentry_client.captureException()
 
 
 if __name__ == "__main__":

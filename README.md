@@ -32,16 +32,20 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  comment_related_tickets      This runs a script to comment related
-                               tickets...
-  get_data                     This command returns data that is being used...
-  train_related_tickets_model  This runs a script to train model on all...
+  comment_related_tickets         This runs a script to comment related
+                                  tickets...
+  get_data                        This command returns data that is being
+                                  used...
+  post_template_comment_on_new_tickets
+                                  This creates a template comment on each...
+  train_related_tickets_model     This runs a script to train model on all...
 ```
 
-There are 3 commands available. 
+There are 4 commands available. 
 1. comment_related_tickets
 2. get_data
 3. train_related_tickets_model
+4. post_template_comment_on_new_tickets
 
 You could ask the program for help regarding each of those commands too. 
 
