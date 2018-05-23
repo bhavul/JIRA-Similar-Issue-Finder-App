@@ -23,7 +23,7 @@ def clean_document(document_of_words):
     # remove stop words
     document_of_words = [w for w in document_of_words if not w in stops]
     # remove ignored words
-    document_of_words = [w for w in document_of_words if not w in ignored_collection.fnb_words.split()]
+    document_of_words = [w for w in document_of_words if not w in ignored_collection.ignored_words.split()]
     # stem each word
     stemmed_words = [stemmer.stem(word) for word in document_of_words]
     return ' '.join(stemmed_words)

@@ -1,0 +1,4 @@
+# JIRA AUTHENTICATION
+jira_url = 'https://jira.endurance.com'
+jira_username = 'myjirausername'
+jira_password = 'somejirapassword'
