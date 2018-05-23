@@ -102,6 +102,7 @@ ENV/
 jira_auth.py
 
 # don't commit endurance related files
+/scripts/logs/
 rotating-logfile.log
 *.pickle
 jira_filters_to_scrape.py
