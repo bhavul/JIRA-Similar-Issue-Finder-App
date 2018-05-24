@@ -114,4 +114,4 @@ current_model_for_related_tickets.py
 .idea/
 
 # ignore already commented json lists
-*_already_commented_tickets.json
+/scripts/data/*.json
