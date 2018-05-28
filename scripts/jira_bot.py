@@ -147,8 +147,7 @@ def get_template_comment():
     comment += "\n \\\\"
     comment += '{panel:title=What was the issue?} \n Fill your answer here. \n {panel}'
     comment += '{panel:title=How did you solve it?} \n Fill your answer here. You can put a link to confluence page where the issue & its solution has been described, or describe the way you debugged and solved this issue. Extra marks for clean formatting.\n {panel}'
-    comment += '{panel:title=Can it occur again in the future AND have a permanent fix possible?} \n Change this line to say just \'Yes\' or \'No\'. Yes means that ticket is not just recurring but has a possible permanent fix / automation that we could do. If it\'s those tickets which can be recurring but can not be automated, say \'No\'. Remember, if you say, \'Yes\
-', then make sure to create a Tech Debt task and link it to this ticket before you close this. \n {panel}'
+    comment += '{panel:title=Can it occur again in the future AND have a permanent fix possible?} \n Change this line to JUST SAY \'Yes\' or \'No\'. Yes means that ticket is not just recurring but has a possible permanent fix / automation that we could do. If it\'s those tickets which can be recurring but can not be automated, say \'No\'. Remember, if you say, \'Yes\', then make sure to create a Tech Debt task and link it to this ticket before you close this. \n {panel}'
     comment += '{panel:title=If recurring and fixable, how frequent can this sort of ticket be?} Edit this line to say one of the following - Every Day, Every Week, Bi-weekly, Every month, Once in a few months, Once in 5-6 months, Once in a year.{panel}\n\n\n'
     comment += "----"
     comment += '\n{color:#707070}_Time is the most precious gift you could give to somebody. By filling this ' \
