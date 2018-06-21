@@ -25,6 +25,25 @@ Following config files are necessary for the module to run properly. For each of
 - **jira_filters_to_scrape.py** : To list down filters to scrape for JIRA tasks, for mailing. Refer to `jira_filters_to_scrape.py.example` for format.
 
 
+### How to run
+
+In most cases, you just need to run : 
+```bash
+python app_cli.py mailer send_mail_of_shame
+```
+This will find the jira tickets on which process is not followed properly and send mails to the assignee of such tickets automatically. 
+
+If you wish to send all the mails of shame to a specific email ID only (for testing purposes, or if you're a lead), then command looks like : 
+```bash
+python app_cli.py mailer send_mail_of_shame --to-email-address your_email@gmail.com
+```
+
+Of course, you can always check all the arguments and possible values by running : 
+
+```bash
+python app_cli.py mailer send_mail_of_shame --help
+```
+
 ### Pending
 More info to be added:
 - How to run mailer

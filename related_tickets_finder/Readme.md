@@ -34,7 +34,7 @@ So, now that you understand how to work with different commands for this bot, he
 3. **Add the trained model's name in current_model_for_related_tickets.py file**.  
 The model's pickle file would have gotten saved in `<Project-Dir>/related_tickets_finder/models/` directory
 4. **Run the bot to comment related tickets**  
-`python jira_bot.py comment_related_tickets`
+`python app_cli.py related_ticket_finder comment_related_tickets`
 
 
 

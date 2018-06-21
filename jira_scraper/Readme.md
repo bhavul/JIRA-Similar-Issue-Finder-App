@@ -24,6 +24,28 @@ Following config files are necessary for the module to run properly. For each of
 - **jira_auth.py** : To put username, password and jira server url. Refer to `jira_auth.py.example` for format.
 - **jira_filters_to_scrape.py** : To list down filters to scrape for JIRA tasks, both for building the models, as well as to find new tickets. Refer to `jira_filters_to_scrape.py.example` for format.
 
+### How to run
+
+Once you have filled the config files correctly, ideally you'll just need to run : 
+
+```bash
+python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets
+```
+
+If you need to test this feature on a custom JQL query, you could use `--open-tickets-filter` argument like this : 
+
+```bash
+python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets --open-tickets-filter "project = WSE AND key = WSE-2494"
+```
+This would just post the comment in WSE-2494. 
+
+Of course, you can check for all supported arguments and options by :
+
+```bash
+python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets --help
+```
+
+
 ### Pending
 More info to be added:
 - How to run jira_scraper
