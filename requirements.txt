@@ -14,3 +14,6 @@ argparse
 click
 raven
 # pickle  # mostly pre-installed
+python-Levenshtein
+fuzzywuzzy
+jinja2

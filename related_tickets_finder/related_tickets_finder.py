@@ -1,13 +1,14 @@
+import datetime
+import pickle
+
+import re
+import logger
+import related_tickets_finder.settings.words_to_ignore as ignored_collection
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
+from util import project_dir_path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
-import re
-import scripts.settings.words_to_ignore as ignored_collection
-import pickle
-import datetime
-import scripts.logger as logger
-from scripts.util import project_dir_path
 
 stops = set(stopwords.words("english"))
 stemmer = SnowballStemmer('english')
@@ -52,8 +53,8 @@ def train_and_save_tfidf_model(jira_tickets_corpus, output_file_name_without_ext
     tfidf_trainingset = tfidf_model.fit_transform(list_of_docs)
     trained_model_and_data_dict = {'model':tfidf_model, 'trained_data':tfidf_trainingset, 'corpus':training_ticket_corpus}
     now = datetime.datetime.now()
-    model_name_with_path = project_dir_path + "/scripts/models/"+output_file_name_without_extn+"_"+str(now.day)+"_"+str(now.month)+"_"+str(now.year)+"_"+str(now.hour)+"_"+str(now.minute)+"_"+str(now.second)+".pickle"
-    logger.logger.info("Trained new model name - "+model_name_with_path)
+    model_name_with_path = project_dir_path + "/related_tickets_finder/models/"+output_file_name_without_extn+"_"+str(now.day)+"_"+str(now.month)+"_"+str(now.year)+"_"+str(now.hour)+"_"+str(now.minute)+"_"+str(now.second)+".pickle"
+    logger.logger.info("Trained new model name - " + model_name_with_path)
     pickle.dump(trained_model_and_data_dict, open(model_name_with_path, "wb"))
     return model_name_with_path
 
@@ -65,9 +66,9 @@ def load_model(model_file_path):
 
 
 def find_top_n_related_jira_tickets(num_of_related_tickets_to_return, input_jira_tickets_corpus, model_file_path):
-    logger.logger.info("Will find top "+str(num_of_related_tickets_to_return)+" related tickets")
+    logger.logger.info("Will find top " + str(num_of_related_tickets_to_return) + " related tickets")
     model, trained_data_vector, trained_data_corpus = load_model(model_file_path)
-    logger.logger.info("Loaded the model and the data from "+model_file_path)
+    logger.logger.info("Loaded the model and the data from " + model_file_path)
     related_tickets_data = []
     for ticket in input_jira_tickets_corpus:
         ticket_data = ticket['title']
@@ -83,5 +84,5 @@ def find_top_n_related_jira_tickets(num_of_related_tickets_to_return, input_jira
         related_tickets_dict['jiraid'] = ticket['jiraid']
         related_tickets_dict['related_tickets'] = [trained_data_corpus[i]['jiraid'] for i in related_ticket_indices]
         related_tickets_data.append(related_tickets_dict)
-    logger.logger.info("Related tickets data - "+str(related_tickets_data))
+    logger.logger.info("Related tickets data - " + str(related_tickets_data))
     return related_tickets_data

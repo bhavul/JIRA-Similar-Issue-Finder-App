@@ -102,16 +102,27 @@ ENV/
 jira_auth.py
 
 # don't commit endurance related files
-/scripts/logs/
+/logs/
 rotating-logfile.log
 *.pickle
-jira_filters_to_scrape.py
-words_to_ignore.py
-current_model_for_related_tickets.py
+jira_scraper/settings/jira_filters_to_scrape.py
+related_tickets_finder/settings/words_to_ignore.py
+related_tickets_finder/settings/current_model_for_related_tickets.py
 
 # ignore idea files
 *.iml
 .idea/
 
+# ignore vs files
+.vscode
+
+# ignore actual config files
+/related_tickets_finder/settings/jira_filters_to_scrape.py
+/mailer/settings/bot_gmail_auth.py
+/mailer/settings/jira_filters_to_scrape.py
+
+
 # ignore already commented json lists
-/scripts/data/*.json
+/related_tickets_finder/data/*.json
+/mailer/data/*.json
+/jira_scraper/data/*.json

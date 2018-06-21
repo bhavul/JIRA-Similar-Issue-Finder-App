@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Mail of Shame</title>
+</head>
+<body>
+<h2>There are tickets for which you did not follow the process properly</h2>
+<img src="https://media.giphy.com/media/vX9WcCiWwUF7G/giphy.gif" alt="shame!">
+<br><br>
+<p>Damn! I had hoped we will never see this day. I didn't expect this from you, {{name}}. Anyway, please check
+    and
+    fix the
+    following tasks:</p>
+<ul>
+    {% for jira_task in incorrectly_marked_tickets %}
+    <li><a href="{{jira_task.url}}">{{jira_task.jiraid}} | {{jira_task.title}}</a> (<b>Issue</b> : {{jira_task
+        .issue}})</li>
+    {% endfor %}
+</ul>
+<p>Note : If any of the tickets mentioned above were assigned to you but someone else marked it as Done, then please
+    ask that someone to fix the issue with the ticket. Or, just re-assign the ticket to that someone, and the ticket
+    would get included in mail of shame for that person instead of you.</p>
+<br>
+<p>I'll remind you again tomorrow if you haven't fixed these by then. Remember if you don't fix them, they'll show up
+    in weekly
+    reporting mail which is sent to a wider audience.<br>Thanks!</p>
+<p>--</p>
+<p>Yours truly,<br>Jira Dev Bot</p>
+<p style="font-size: 11px;color: #a20136;">Although it's a rare occurrence, but if you think the bot has
+    misclassified this, please forward this mail to Bhavul and add a note describing the issue so he can look into it.
+    <a href="https://github.com/bhavul/JIRA-Similar-Issue-Finder-App/" target="_blank">Or fix it yourself?</a> </p>
+</body>
+</html>
