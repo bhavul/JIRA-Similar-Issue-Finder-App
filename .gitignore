@@ -126,3 +126,6 @@ related_tickets_finder/settings/current_model_for_related_tickets.py
 /related_tickets_finder/data/*.json
 /mailer/data/*.json
 /jira_scraper/data/*.json
+
+# escape the run commands of raspberrypi deployment
+how_it_runs_on_raspberrypi_crontab.txt
