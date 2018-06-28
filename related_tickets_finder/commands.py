@@ -1,6 +1,6 @@
 import click
 import jira_scraper.jira_worker as scraper
-import jira_scraper.settings.jira_filters_to_scrape as jira_filters
+import related_tickets_finder.settings.jira_filters_to_scrape as jira_filters
 import logger
 import related_tickets_finder.related_tickets_finder as related_tickets_finder
 from pprint import pformat
