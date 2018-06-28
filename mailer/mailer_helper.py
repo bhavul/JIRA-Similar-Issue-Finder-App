@@ -8,7 +8,9 @@ import jira_scraper.settings.jira_auth as auth
 from pprint import pformat
 import jira_scraper.jira_worker as scraper
 import mailer.settings.bot_gmail_auth as gmail_auth
-
+import mailer.settings.jira_filters_to_scrape as jira_filters
+import jinja2
+from util import project_dir_path
 
 # Constants
 REGEX_TO_FETCH_PANELS = r"({panel:title=[\w\s]*[^A-Za-z0-9]*[\w\s]*\?*}[\w\s.&,`\"\\\d/$&+,:;=?@#|'<>.^*()%!-]*{panel})"
@@ -19,7 +21,6 @@ LIST_OF_TEXT_THAT_MEANS_YES = ['yes', 'yup', 'yeah', 'yea', 'ya', 'yes.', 'yes,'
 fromaddr = gmail_auth.name+" <"+gmail_auth.email+">"
 fromemailaddr = gmail_auth.email
 bot_mail_password = gmail_auth.password
-mail_subject = "Mail of Shame"
 
 
 # todo (high) - improve the logic of checking the linked ticket - shuold be a tech debt item!
@@ -52,13 +53,19 @@ def find_if_issue_is_recurring(comment):
             logger.logger.error("THIS IS A PROBLEM! THIS SHOULDN'T HAPPEN!")
             return False
 
-def send_mail(assignee_email, rendered_body_of_mail, to_email_address):
-    toaddr = assignee_email
-    if to_email_address is not None:
-        toaddr = to_email_address
+def send_mail(default_to_email_addr, rendered_body_of_mail, mail_subject, custom_to_email_address,
+              cc_email_address=None,
+              bcc_email_address=None):
+    toaddr = default_to_email_addr
+    if custom_to_email_address is not None:
+        toaddr = custom_to_email_address
     msg = MIMEMultipart()
     msg['From'] = fromaddr
     msg['To'] = toaddr
+    if cc_email_address:
+        msg['Cc'] = cc_email_address
+    if bcc_email_address:
+        msg['Bcc'] = bcc_email_address
     msg['Subject'] = mail_subject
     msg.attach(MIMEText(rendered_body_of_mail, 'html'))
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -144,3 +151,25 @@ def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
             else:
                 logger.logger.warning(str(ticket["jiraid"])+" has no comments!")
     logger.logger.info("Person - Task Map:" + pformat(person_task_map))
+
+def get_person_task_map_for_mail_of_shame(open_tickets_filter):
+    jira_obj = scraper.connect_to_jira()
+    default_filters = jira_filters.filters_to_get_completed_tickets
+    if open_tickets_filter is not None:
+        filter_to_use = {'custom': open_tickets_filter}
+    else:
+        filter_to_use = default_filters
+    logger.logger.info("Filter I'm using : " + pformat(filter_to_use))
+    person_task_map = {}
+    get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map)
+    return person_task_map
+
+def extract_ad(assignee_email):
+    """This takes in email-id and spits out the username of the email."""
+    return assignee_email.split('@')[0]
+
+def get_mail_template(template_file_name):
+    templateLoader = jinja2.FileSystemLoader(searchpath=project_dir_path+"/mailer/templates/")
+    templateEnv = jinja2.Environment(loader=templateLoader)
+    template = templateEnv.get_template(template_file_name)
+    return template

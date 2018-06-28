@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Untitled Document.md</title><style></style></head><body id="preview">
+<h1><a id="Weekly_Ticket_Process_Analysis_0"></a>Weekly Ticket Process Analysis</h1>
+<hr>
+<h2><a id="Some_people_deserve_an_applause_4"></a>Some people deserve an applause</h2>
+<p><a href=""><img src="https://media.giphy.com/media/UnmkOOZ7UpG12/giphy.gif" alt=""></a></p>
+<ul>
+    {% for name in people_who_followed_process_correctly %}
+    <li>{{name}} has followed the tickets process properly.</li>
+    {% endfor %}
+</ul>
+<br><hr><br>
+{% if incorrectly_marked_tickets %}
+<h2><a id="While_others_people_deserve_a_special_place_11"></a>While others people deserve a special place</h2>
+<p><a href=""><img src="https://media.giphy.com/media/WiRBjwK64r3s4/giphy.gif" alt=""></a></p>
+<p>These people have not followed the process properly, unfortunately.</p>
+{% for assignee_ad,tickets_data in incorrectly_marked_tickets.items() %}
+<p><strong>{{assignee_ad}}</strong></p>
+<ul>
+    {% for jira_task in tickets_data %}
+    <li><a href="{{jira_task.url}}">{{jira_task.jiraid}} | {{jira_task.title}}</a> (<b>Issue</b> : {{jira_task
+        .issue}})</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+<p>Most probably, every one of these people have been receiving mail of shame every single day. Yet it’s still not fixed, so now this mail’s going to leads and PgMs also. Let’s fix these up?</p>
+<p>Let’s aim for a week where we only see applause gif in this mail and I assure you the leads/PgMs would sponsor
+    ice-cream for all.
+    ;-)</p>
+{% endif %}
+{% if not incorrectly_marked_tickets %}
+<p><strong>This is awesome! Every one in the team has followed the process properly. This calls for an
+    ice-cream for all.</strong></p>
+{% endif %}
+
+</body></html>

@@ -39,6 +39,7 @@ related_ticket_finder.add_command(related_ticket_finder_commands.comment_related
 related_ticket_finder.add_command(related_ticket_finder_commands.get_data)
 jira_scraper_commentor.add_command(jira_scraper.post_template_comment_on_new_tickets)
 mailer.add_command(mailer_commands.send_mail_of_shame)
+mailer.add_command(mailer_commands.send_weekly_analysis_mail)
 
 if __name__ == "__main__":
     cli()
