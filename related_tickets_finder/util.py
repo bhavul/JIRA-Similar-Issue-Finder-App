@@ -2,7 +2,7 @@ import os
 import logger
 import json
 from util import project_dir_path
-import jira_scraper.settings.jira_filters_to_scrape as jira_filters
+import related_tickets_finder.settings.jira_filters_to_scrape as jira_filters
 import related_tickets_finder.settings.current_model_for_related_tickets as current_model
 
 def create_already_commented_tickets_file_if_not_exists(filename):
