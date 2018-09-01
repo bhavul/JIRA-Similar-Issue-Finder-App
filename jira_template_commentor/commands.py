@@ -4,7 +4,7 @@ import click
 import jira_scraper.jira_worker as scraper
 import jira_template_commentor.util as jira_template_commentor_util
 import logger
-from util import project_dir_path
+from common_util import project_dir_path
 import os
 import configparser
 

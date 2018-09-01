@@ -3,7 +3,7 @@ import logger
 import json
 import configparser
 
-from util import project_dir_path
+from common_util import project_dir_path
 
 
 #constant

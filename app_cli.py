@@ -4,7 +4,7 @@ import click
 import os
 
 # Add current path to sys path so, imports work nicely
-sys.path.append(os.path.dirname(os.path.realpath('app_cli.py')))
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 import jira_template_commentor.commands as jira_template_commentor
 import related_tickets_finder.commands as related_ticket_finder_commands

@@ -5,9 +5,9 @@ import json
 import configparser
 import os
 
-from util import project_dir_path
+from common_util import project_dir_path
 import jira_scraper.jira_worker as scraper
-import related_tickets_finder.related_tickets_finder as related_tickets_finder
+import related_tickets_finder.similar_ticket_finder as related_tickets_finder_module
 import related_tickets_finder.util as related_tickets_pkg_util
 
 #constant
@@ -36,7 +36,7 @@ def train_related_tickets_model():
             logger.logger.info("Will crawl " + filter_name)
             jira_tickets_corpus = scraper.filter_crawler(jira_obj, filter_query)
             logger.logger.info("Crawling of " + filter_name + " done.")
-            related_tickets_finder.train_and_save_tfidf_model(jira_tickets_corpus, "model_" + filter_name)
+            related_tickets_finder_module.train_and_save_tfidf_model(jira_tickets_corpus, "model_" + filter_name)
 
     except Exception as e:
         logger.logger.exception(e)
@@ -88,8 +88,8 @@ def comment_related_tickets(test_model, open_tickets_filter):
             model_file_path = related_tickets_pkg_util.get_model_file_path(filter_name, test_model)
 
             # find top N related tickets
-            related_tickets_data = related_tickets_finder.find_top_n_related_jira_tickets(5, new_tickets_corpus,
-                                                                                          model_file_path)
+            related_tickets_data = related_tickets_finder_module.find_top_n_related_jira_tickets(5, new_tickets_corpus,
+                                                                                                 model_file_path)
 
             # for each ticket, comment the top N related tickets to it
             for ticket in related_tickets_data:

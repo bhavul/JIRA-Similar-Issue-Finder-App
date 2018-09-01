@@ -1,7 +1,7 @@
 import logging
 import logzero
 from raven import Client
-from util import project_dir_path
+from common_util import project_dir_path
 
 logzero.loglevel(logging.INFO)
 formatter = logzero.LogFormatter(fmt='%(color)s[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d]%(end_color)s %(message)s',datefmt='%d-%m-%Y %H:%M:%S')

@@ -3,10 +3,10 @@ import pickle
 
 import re
 import logger
-import related_tickets_finder.settings.words_to_ignore as ignored_collection
+# import related_tickets_finder.settings.words_to_ignore as ignored_collection
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
-from util import project_dir_path
+from common_util import project_dir_path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
@@ -24,7 +24,8 @@ def clean_document(document_of_words):
     # remove stop words
     document_of_words = [w for w in document_of_words if not w in stops]
     # remove ignored words
-    document_of_words = [w for w in document_of_words if not w in ignored_collection.ignored_words.split()]
+    ignored_words = "issue, client, ticket, https, screenshot, support, following, name, getting, kindly, please, reference, backend, yesterday, answer, searched"
+    document_of_words = [w for w in document_of_words if not w in ignored_words.split()]
     # stem each word
     stemmed_words = [stemmer.stem(word) for word in document_of_words]
     return ' '.join(stemmed_words)

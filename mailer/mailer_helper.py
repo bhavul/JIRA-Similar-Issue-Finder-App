@@ -9,7 +9,7 @@ from fuzzywuzzy import fuzz
 
 import jira_scraper.jira_worker as scraper
 import logger
-from util import project_dir_path
+from common_util import project_dir_path
 import os
 import configparser
 
