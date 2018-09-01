@@ -37,7 +37,6 @@ def extract_clean_documents_from_corpus(jira_tickets_corpus):
     list_of_docs = []
     i = 0
     for ticket_dict in jira_tickets_corpus:
-        doc_cleaned_text = ''
         document_of_words = (str(ticket_dict['title'])+" "+str(ticket_dict['summary']))
         doc_cleaned_text = clean_document(document_of_words)
         list_of_docs.append(doc_cleaned_text)

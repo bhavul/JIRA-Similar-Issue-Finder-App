@@ -1,9 +1,10 @@
 import re
-import logger
-import jira_scraper.settings.jira_auth as auth
 from jira import JIRA
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
+
+import jira_scraper.settings.jira_auth as auth
+import logger
 
 maxResultsToReturn = 2000
 stops = set(stopwords.words("english"))
@@ -36,9 +37,7 @@ def get_list_of_comments(jira_issue_object):
     return jira_issue_object.fields.comment.comments
 
 def get_reqd_comments_data(list_of_comments_object):
-    ticket_dict = {}
-    ticket_dict['comments_data'] = []
-    ticket_dict['comments_corpus'] = []
+    ticket_dict = {'comments_data':[], 'comments_corpus':[]}
     for comment in list_of_comments_object:
         comment_data = {}
         if comment.author.emailAddress:

@@ -4,13 +4,10 @@ matplotlib
 ipython
 jupyter
 pandas
-sympy
-nose
 logzero # see github.com/metachris/logzero
 jira
 nltk
 scikit-learn==0.18.2
-argparse
 click
 raven
 # pickle  # mostly pre-installed

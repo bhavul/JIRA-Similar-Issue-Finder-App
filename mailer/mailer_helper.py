@@ -1,15 +1,17 @@
-import logger
-import re
-from email.mime.text import MIMEText
 import smtplib
 from email.mime.multipart import MIMEMultipart
-from fuzzywuzzy import fuzz
-import jira_scraper.settings.jira_auth as auth
+from email.mime.text import MIMEText
 from pprint import pformat
+
+import jinja2
+import re
+from fuzzywuzzy import fuzz
+
 import jira_scraper.jira_worker as scraper
+import jira_scraper.settings.jira_auth as auth
+import logger
 import mailer.settings.bot_gmail_auth as gmail_auth
 import mailer.settings.jira_filters_to_scrape as jira_filters
-import jinja2
 from util import project_dir_path
 
 # Constants
@@ -111,9 +113,9 @@ def has_assignee_edited_comment(comment):
 
 
 def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
-    for filter_name, filter in filter_to_use.items():
+    for filter_name, filter_query in filter_to_use.items():
         logger.logger.info("Crawling data for "+str(filter_name))
-        jira_tickets_corpus = scraper.filter_crawler(jira_obj, filter, True)
+        jira_tickets_corpus = scraper.filter_crawler(jira_obj, filter_query, True)
         logger.logger.info("Crawling done.")
         for ticket in jira_tickets_corpus:
             logger.logger.info("Will check for mis-documentation for ticket : "+str(ticket['jiraid']))
@@ -169,7 +171,7 @@ def extract_ad(assignee_email):
     return assignee_email.split('@')[0]
 
 def get_mail_template(template_file_name):
-    templateLoader = jinja2.FileSystemLoader(searchpath=project_dir_path+"/mailer/templates/")
-    templateEnv = jinja2.Environment(loader=templateLoader)
-    template = templateEnv.get_template(template_file_name)
+    template_loader = jinja2.FileSystemLoader(searchpath=project_dir_path+"/mailer/templates/")
+    template_env = jinja2.Environment(loader=template_loader)
+    template = template_env.get_template(template_file_name)
     return template
