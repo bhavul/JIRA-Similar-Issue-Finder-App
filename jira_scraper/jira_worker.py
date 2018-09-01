@@ -2,18 +2,23 @@ import re
 from jira import JIRA
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
-
-import jira_scraper.settings.jira_auth as auth
+import configparser
+import os
 import logger
+
 
 maxResultsToReturn = 2000
 stops = set(stopwords.words("english"))
 stemmer = SnowballStemmer('english')
 
-
 def connect_to_jira():
     logger.logger.info("Connecting to JIRA.")
-    return JIRA(auth.jira_url, auth=(auth.jira_username,auth.jira_password))
+    jira_config = configparser.ConfigParser()
+    jira_config_file = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings'),
+                                'jira_auth.config')
+    logger.logger.info("Loading jira config")
+    jira_config.read(jira_config_file)
+    return JIRA(jira_config['URL']['JiraUrl'], auth=(jira_config['CREDENTIALS']['JiraUsername'], jira_config['CREDENTIALS']['JiraPassword']))
 
 def remove_code_from_comments(comment_body):
     return re.sub(r'{code:.*}([\s\S]*?){code}','',str(comment_body))
@@ -73,8 +78,6 @@ def filter_crawler(authed_jira, jira_filter, include_comments=False):
     tickets_corpus = []
     if filter_tickets:
         logger.logger.info("Total tickets to crawl : "+str(len(filter_tickets)))
-        one_tenth = len(filter_tickets)/10
-        percentage_crawled = 0
         for i,ticket in enumerate(filter_tickets):
             ticket_dict = {}
             jira_id = get_jira_id(ticket)
@@ -89,10 +92,10 @@ def filter_crawler(authed_jira, jira_filter, include_comments=False):
                 list_of_comments = get_list_of_comments(ticket_full_data)
                 ticket_dict['comments_data'],ticket_dict['comments_corpus'] = get_reqd_comments_data(list_of_comments)
             tickets_corpus.append(ticket_dict)
-            if i % one_tenth == 0:
-                percentage_crawled += 10
-                logger.logger.info(str(percentage_crawled)+"% tickets done.")
-    logger.logger.debug("Crawling done. Ticket corpus - " + str(tickets_corpus))
+            if i % 5 == 0:
+                logger.logger.info(str(i)+"% tickets done.")
+    logger.logger.info("Crawling completed!")
+    logger.logger.debug("Ticket corpus - " + str(tickets_corpus))
     return tickets_corpus
 
 def comment_on_task(authed_jira,jira_id,comment):

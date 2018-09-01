@@ -1,0 +1,14 @@
+# Two dictionaries are needed here. What's written below is just examples. You need to feed your own filters and create a jira_filters_to_scrape.py file. filters to get completed tickets contains all filters which need to be used for generating models for them. This is basically the data you feed for the app to
+build similarity matching models.
+
+[FILTER_COMPLETED_TICKETS_FOR_TRAINING]
+
+project1_closed_tickets = project = WSE AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
+
+project2_closed_tickets = project = BBS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
+
+[FILTER_OPEN_NEW_TICKETS]
+
+project1_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project1")
+
+project2_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project2")

@@ -1,0 +1,6 @@
+[URL]
+JiraUrl = https://jira.endurance.com
+
+[CREDENTIALS]
+JiraUsername = myjirausername
+JiraPassword = myJir4pa55w0rd

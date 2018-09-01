@@ -1,0 +1,9 @@
+# This file stores mapping of type to model. Make sure the model names you specify here exists as files in /scripts/models directory.
+# Remember this is just an example file. You will need a current_model_in_use.config file which has similar structure
+ as this but with your key and values.
+
+[FILTER_MODEL_MAP]
+
+project1_open_tickets = model_type1.pickle
+
+project2_open_tickets = model_type2.pickle

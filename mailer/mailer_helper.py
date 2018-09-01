@@ -8,21 +8,36 @@ import re
 from fuzzywuzzy import fuzz
 
 import jira_scraper.jira_worker as scraper
-import jira_scraper.settings.jira_auth as auth
 import logger
-import mailer.settings.bot_gmail_auth as gmail_auth
-import mailer.settings.jira_filters_to_scrape as jira_filters
 from util import project_dir_path
+import os
+import configparser
 
 # Constants
 REGEX_TO_FETCH_PANELS = r"({panel:title=[\w\s]*[^A-Za-z0-9]*[\w\s]*\?*}[\w\s.&,`\"\\\d/$&+,:;=?@#|'<>.^*()%!-]*{panel})"
 REGEX_TO_FETCH_TEXT_INSIDE_PANELS = r"{panel:title=[\w\s]*[^A-Za-z0-9]*[\w\s]*\?*}([\w\s.&,`\"\\\d/$&+,:;=?@#|'<>.^*()%!-]*){panel}"
 LIST_OF_TEXT_THAT_MEANS_YES = ['yes', 'yup', 'yeah', 'yea', 'ya', 'yes.', 'yes,', 'yes!', 'yo!', 'yo', 'yup!', 'yeah!', 'yeah.']
+THIS_MODULE_DIRECTORY = os.path.join(project_dir_path, 'mailer')
 
-# Email Constants
-fromaddr = gmail_auth.name+" <"+gmail_auth.email+">"
-fromemailaddr = gmail_auth.email
-bot_mail_password = gmail_auth.password
+# Gmail config
+gmail_config = configparser.ConfigParser()
+gmail_auth_config_file = os.path.join(os.path.join(THIS_MODULE_DIRECTORY,'settings'),'bot_gmail_auth.config')
+gmail_config.read(gmail_auth_config_file)
+bot_email = gmail_config['MAIL_CREDS']['email']
+bot_mail_password = gmail_config['MAIL_CREDS']['password']
+bot_name = gmail_config['MAIL_CREDS']['name']
+
+fromaddr = bot_name+" <"+bot_email+">"
+fromemailaddr = bot_email
+
+
+# jira config
+jira_config = configparser.ConfigParser()
+jira_config_file = os.path.join(
+    os.path.join(os.path.join(project_dir_path, 'jira_scraper'), 'settings'), 'jira_auth.config')
+jira_config.read(jira_config_file)
+jira_url = jira_config['URL']['JiraUrl']
+jira_bot_username = jira_config['CREDENTIALS']['JiraUsername']
 
 
 # todo (high) - improve the logic of checking the linked ticket - shuold be a tech debt item!
@@ -90,7 +105,7 @@ def has_assignee_edited_comment(comment):
             answer = answer[0]
             logger.logger.debug("answer : "+str(answer))
             # todo (med) : the values we're checking for (RHS) should be same as ones defined in templated commentor
-            # todo (med) : in a separate config file
+            # todo (med) : in a separate jira_config file
             if(index == 0):
                 duplication_value = fuzz.ratio(answer,'Fill your answer here.')
                 logger.logger.debug("question:1 | duplication_value:"+str(duplication_value))
@@ -123,7 +138,7 @@ def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
                 person_task_map[ticket['assigneeEmail']] = []
             if ticket['comments_data']:
                 for comment in ticket['comments_data']:
-                    if comment['name'] == auth.jira_username:
+                    if comment['name'] == jira_bot_username:
                         jiraid_list = [ticket_with_issue['jiraid'] for ticket_with_issue in person_task_map[ticket[
                             'assigneeEmail']]]
                         if(ticket['jiraid'] in jiraid_list):
@@ -133,7 +148,7 @@ def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
                         if(not is_not_lazy_person):
                             issue = "Did not properly document what was done to solve the ticket."
                             person_task_map[ticket['assigneeEmail']].append({
-                                'url': auth.jira_url + "/browse/" + ticket['jiraid'],
+                                'url': jira_url + "/browse/" + ticket['jiraid'],
                                 'name':ticket['assigneeName'],
                                 'jiraid':ticket['jiraid'],
                                 'title': ticket['title'],
@@ -145,7 +160,7 @@ def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
                             is_task_linked = find_if_task_linked(ticket)
                             if (not is_task_linked):
                                 person_task_map[ticket['assigneeEmail']].append({
-                                    'url': auth.jira_url + "/browse/" + ticket['jiraid'],
+                                    'url': jira_url + "/browse/" + ticket['jiraid'],
                                     'name':ticket['assigneeName'],
                                     'jiraid':ticket['jiraid'],
                                     'title': ticket['title'],
@@ -156,7 +171,12 @@ def get_data_for_mail_of_shame(filter_to_use, jira_obj, person_task_map):
 
 def get_person_task_map_for_mail_of_shame(open_tickets_filter):
     jira_obj = scraper.connect_to_jira()
-    default_filters = jira_filters.filters_to_get_completed_tickets
+    # read jql filters config
+    jql_filters = configparser.ConfigParser()
+    jql_filters_config_file = os.path.join(os.path.join(THIS_MODULE_DIRECTORY, 'settings'),
+                                           'jql_filters_to_scrape.config')
+    jql_filters.read(jql_filters_config_file)
+    default_filters = dict(jql_filters['FILTERS_TICKET_CHECK_FOR_INCORRECT_DOCUMENTATION'])
     if open_tickets_filter is not None:
         filter_to_use = {'custom': open_tickets_filter}
     else:

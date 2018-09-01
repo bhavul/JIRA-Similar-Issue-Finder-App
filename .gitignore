@@ -99,15 +99,14 @@ ENV/
 .mypy_cache/
 
 # don't commit actual credentials to github
-jira_scraper/settings/jira_auth.py
+jira_scraper/settings/jira_auth.config
 
 # don't commit endurance related files
 /logs/
 rotating-logfile.log
 *.pickle
-jira_template_commentor/settings/jira_filters_to_scrape.py
 related_tickets_finder/settings/words_to_ignore.py
-related_tickets_finder/settings/current_model_for_related_tickets.py
+related_tickets_finder/settings/current_model_in_use.config
 
 # ignore idea files
 *.iml
@@ -117,9 +116,10 @@ related_tickets_finder/settings/current_model_for_related_tickets.py
 .vscode
 
 # ignore actual config files
-/related_tickets_finder/settings/jira_filters_to_scrape.py
-/mailer/settings/bot_gmail_auth.py
-/mailer/settings/jira_filters_to_scrape.py
+/related_tickets_finder/settings/jql_filters_to_scrape.config
+/jira_template_commentor/settings/jira_jql_filters.config
+/mailer/settings/bot_gmail_auth.config
+/mailer/settings/jql_filters_to_scrape.config
 
 
 # ignore already commented json lists
@@ -129,3 +129,5 @@ related_tickets_finder/settings/current_model_for_related_tickets.py
 
 # escape the run commands of raspberrypi deployment
 how_it_runs_on_raspberrypi_crontab.txt
+
+/jira_scraper/settings/jira_auth.config

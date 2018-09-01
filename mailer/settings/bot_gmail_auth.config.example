@@ -1,15 +1,16 @@
 # This file contains the credentials for Gmail for your bot. Of course, if you need to send email, you need to have a
-#  mail account. The app currently only supports Gmail (let me know if that's a bummer!).
-
+# mail account. The app currently only supports Gmail (let me know if that's a bummer!).
 # You should replace values below and create your own file without the .example at the end. This is just to serve as
 # an example of what data is required.
 
 # NOTE : Gmail doesn't allow sending mails programmatically until you turn 'allow access to less secured apps' to ON.
 # So, make sure to toggle that for the gmail account you have to use for the bot.
 
-# email address & password
-email = "jiradevbot@gmail.com"
-password = "qwedsa"
+
+
+[MAIL_CREDS]
+email = jiradevbotendurance@gmail.com
+password = endurance@123
 
 # name - This is what appears as the name of who the mail is from.
-name = "JIRA Dev Bot"
+name = JIRA Dev Bot
