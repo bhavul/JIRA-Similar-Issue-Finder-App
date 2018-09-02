@@ -1,0 +1,15 @@
+##########################################################################################
+##### THIS IS THE CRON FILE WHICH IS ADDED AS A CRON WHEN YOU BUILD DOCKER CONTAINER #####
+##### IT IS REQUIRED TO MAKE SURE THE BOT KEEPS ON RUNNING. YOU CAN EDIT THIS FILE   #####
+##### IF YOU WISH TO CHANGE THE TIMINGS OF WHEN DIFFERENT COMMANDS OF BOT RUNS       #####
+##### YOU CAN ALSO SEE / MODIFY THE LOG FILE WHICH STORES THE LOGS                   #####
+##########################################################################################
+
+*/10 * * * *    /app/jira-bot/app_cli.py related_ticket_finder comment_related_tickets >> /app/jira-bot/logs/cron-related-tickets.log 2>&1
+
+*/5 * * * *    /app/jira-bot/app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets >> /app/jira-bot/logs/cron-template-commentor.log 2>&1
+
+30 12 * * *    /app/jira-bot/app_cli.py mailer send_mail_of_shame >> /app/jira-bot/logs/cron-mail-of-shame.log 2>&1
+
+00 11 * * FRI   /app/jira-bot/app_cli.py mailer send_weekly_analysis_mail --to-email-address "apac-wholesale-devs@endurance.com" --cc-email-address "sheetal.m@endurance.com" --bcc-email-address "joel.r@endurance.com"  >>
+/app/jira-bot/logs/cron-weekly-ticket-analysis-mail.log 2>&1
