@@ -1,6 +1,6 @@
 # Jira Template Commentor
 
-At Endurance, this is being used to put a templated comment on all jira issues satisfying a particular JQL query.
+At Endurance, this was being used to put a templated comment on all jira issues satisfying a particular JQL query.
 
 ### Directory Structure
 Just like other modules, directory structure follows a standard format : 
@@ -30,9 +30,9 @@ python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets
 If you need to test this feature on a custom JQL query, you could use `--open-tickets-filter` argument like this : 
 
 ```bash
-python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets --open-tickets-filter "project = WSE AND key = WSE-2494"
+python app_cli.py jira_scraper_commentor post_template_comment_on_new_tickets --open-tickets-filter "project = ABC AND key = ABC-2494"
 ```
-This would just post the comment in WSE-2494. 
+This would just post the comment in ABC-2494. 
 
 Of course, you can check for all supported arguments and options by :
 

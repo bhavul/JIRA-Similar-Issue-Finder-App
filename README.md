@@ -1,6 +1,6 @@
 # JIRA Helper Bot
 
-This is a side-project I did for improving JIRA SLAs at Endurance International Group. It started with commenting related past JIRA tickets on the new JIRA support tickets that get escalated to a developer. 
+This is a side-project I did for improving JIRA SLAs at Endurance International Group while I was working with them. It started with commenting related past JIRA tickets on the new JIRA support tickets that get escalated to a developer. 
 
 This helps the developer to get the context of what piece of codebase to look at, what tables to look at, and in general get an idea of what needs to be debugged by looking at old completed similar tickets.
 
@@ -51,11 +51,11 @@ Commands:
 
 There are 3 modules as you can see above: 
 1. **jira_scraper_commentor** : This module can be used to scrape data from JIRA and comment on tickets. Currently, it offers a templated comment which could be commented on every ticket satisfying a JQL filter.  
-  At Endurance, this is being used to comment a set of questions on every new ticket which the developer needs to answer before they close the ticket (What is the issue, How did they solve it, Can it occur again, etc.)  
+  At Endurance, this was being used to comment a set of questions on every new ticket which the developer needs to answer before they close the ticket (What is the issue, How did they solve it, Can it occur again, etc.)  
 2. **mailer** : This module is used for sending mails. Every mail can have its own html. Jinja2 templating engine is used.  
-At Endurance this is being used to send the mail of shame - a mail which reminds developer that they have closed certain ticket but not followed the process in place.
+At Endurance this was being used to send the mail of shame - a mail which reminds developer that they have closed certain ticket but not followed the process in place.
 3. **related_ticket_finder** : This module is used to train a model for tickets and then to comment related tickets on every new ticket that comes up. The idea is if you've had similar ticket in the past, the proceedings and comments of that ticket could help a developer understand ways to debug the new ticket.  
-At Endurance, this is used by Wholesale team to reduce SLAs and give a head-start into how to debug a particular ticket for any developer.
+At Endurance, this was used by Wholesale team to reduce SLAs and give a head-start into how to debug a particular ticket for any developer.
 
 Each of these modules have their own sub-commands.
 
@@ -106,9 +106,9 @@ So, there are 3 commands available under `related_ticket_finder` module. You can
 Suggesting, that `comment_related_tickets` can take `--test-model` and/or `--open-tickets-filter`
 option. These parameters let you comment related tickets by using a custom model (whose path you give as the argument) AND/OR by using a different filter to get open-tickets. 
 
-For example, if I had experimented to build a new model called *'MojoJojoModel'*, and I wanted to only use that model to comment only on two JIRAs - WSE-1234, and WSE-2345. Then I could run the bot like this : 
+For example, if I had experimented to build a new model called *'MojoJojoModel'*, and I wanted to only use that model to comment only on two JIRAs - ABC-1234, and ABC-2345. Then I could run the bot like this : 
 
-**`python app_cli.py related_ticket_finder comment_related_tickets --test-model "/Users/bhavul.g/JiraSimilarityHelper/models/MojoJojo" --open-tickets-filter "project = WSE AND key in (WSE-1234, WSE-2345)"`**
+**`python app_cli.py related_ticket_finder comment_related_tickets --test-model "/Users/bhavul.g/JiraSimilarityHelper/models/MojoJojo" --open-tickets-filter "project = ABC AND key in (ABC-1234, ABC-2345)"`**
 
 Of course, since `--test-model` and `--open-tickets-filter` are each an **option**, so if you don't give them, it would still run. It would pick up the models defined in file **current_model_for_related_tickets.py**, and pick up the filters from **jira_filters_to_scrape.py** file. 
 
@@ -132,7 +132,7 @@ Let's talk about it. If you can develop yourself, then go ahead, fork the repo a
 This is a small list of features that should be coming up on this repository soon and they're already planned. They're listed in terms of their priority. 
 
 - Finish the documentation of individual module
-- A mail which could be used to send statistics of jira issues under an epic. [To be used as tech-debt reminder mail at Endurance]
+- A mail which could be used to send statistics of jira issues under an epic. [Tech debt reminder]
 - Dockerization of this repository for easy installation, deployment and execution
 - mail about data of the month for tickets
 - Sort by date while printing related tickets

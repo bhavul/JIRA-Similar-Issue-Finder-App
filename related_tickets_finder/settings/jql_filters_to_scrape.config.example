@@ -3,12 +3,12 @@ build similarity matching models.
 
 [FILTER_COMPLETED_TICKETS_FOR_TRAINING]
 
-project1_closed_tickets = project = WSE AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
+project1_closed_tickets = project = ABC AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
 
-project2_closed_tickets = project = BBS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
+project2_closed_tickets = project = PQRS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
 
 [FILTER_OPEN_NEW_TICKETS]
 
-project1_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project1")
+project1_open_tickets = project = ABC AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project1")
 
-project2_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project2")
+project2_open_tickets = project = PQRS AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done", Completed) AND component in ("Support - Project2")

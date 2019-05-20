@@ -1,5 +1,5 @@
 [URL]
-JiraUrl = https://jira.endurance.com
+JiraUrl = https://jira.test.endurance.com
 
 [CREDENTIALS]
 JiraUsername = myjirausername

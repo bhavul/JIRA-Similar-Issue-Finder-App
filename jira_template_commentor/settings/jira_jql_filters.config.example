@@ -5,16 +5,16 @@ to build similarity matching models.
 # NOTE : If you're editing this file manually, remember to not use extra single quotes for key and value. Else
 configparser screws up.
 
-project1_closed_tickets = project = WSE AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
+project1_closed_tickets = project = ABC AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
 
-project2_closed_tickets  =  project = BBS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
+project2_closed_tickets  =  project = PQRS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
 
 
 # These are the filters which would give the data of all tickets on which related tickets have to be commented. These filters are used every time by default and the tickets that satisfy these filters are commented on. Of course, it doesn't comment on tickets it has already commented on before.
 [FILTERS_FOR_FETCHING_NEW_TICKETS]
 
-project1_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done",
+project1_open_tickets = project = ABC AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done",
 Completed) AND component in ("Support - Project1")
 
-project2_open_tickets = project = WSE AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done",
+project2_open_tickets = project = PQRS AND issuetype != Epic AND status not in (Abandoned, Done, "Done/Done",
 Completed) AND component in ("Support - Project2")

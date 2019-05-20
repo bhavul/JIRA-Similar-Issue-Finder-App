@@ -2,7 +2,7 @@
 
 This module takes care of triggering different mails to developers, leads regarding data related to tickets. 
 
-At Endurance, this is being used to send a mail of shame every day to the developer who closed/resolved a ticket on JIRA without following the process of commenting what the issue was and how they solved it. Essentially mail of shame code could be used as a template for any other similar mails to monitor if a process is being followed properly.
+At Endurance, this was being used to send a mail of shame every day to the developer who closed/resolved a ticket on JIRA without following the process of commenting what the issue was and how they solved it. Essentially mail of shame code could be used as a template for any other similar mails to monitor if a process is being followed properly.
 
 
 ### Directory Structure

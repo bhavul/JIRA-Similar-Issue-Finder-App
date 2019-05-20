@@ -2,6 +2,6 @@
 
 [FILTERS_TICKET_CHECK_FOR_INCORRECT_DOCUMENTATION]
 
-project1_closed_tickets = project = WSE AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
+project1_closed_tickets = project = ABC AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 1")
 
-project2_closed_tickets = project = BBS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")
+project2_closed_tickets = project = PQRS AND issuetype != Epic AND status in (Done, "Done/Done", Completed) AND component in ("Support - Project 2")

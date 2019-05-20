@@ -9,8 +9,8 @@
 
 
 [MAIL_CREDS]
-email = jiradevbotendurance@gmail.com
-password = endurance@123
+email = jiradevbot@gmail.com
+password = HardPassword@123
 
 # name - This is what appears as the name of who the mail is from.
 name = JIRA Dev Bot
